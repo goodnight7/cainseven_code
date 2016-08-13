@@ -18,9 +18,9 @@
 
 
 ### file list for .html
-* [velocityStartUp](java/java/velocityStartUp.html)
-* [threadPoolSpring](java/java/threadPoolSpring.html)
-* [startUpElasticSearch](java/java/startUpElasticSearch.html)
+* [velocityStartUp](java/velocityStartUp.html)
+* [threadPoolSpring](java/threadPoolSpring.html)
+* [startUpElasticSearch](java/startUpElasticSearch.html)
 * [upDownLoadFile](java/upDownLoadFile.html)
 * [jsonToXml](java/jsonToXml.html)
 * [fileConvert](java/fileConvert.html)
