@@ -13,6 +13,7 @@
 * [jsonToXml](java/jsonToXml.md)
 * [fileConvert](java/fileConvert.md)
 * [javaLearnNote](java/javaLearnNote.md)
+* [gitLearn](toolGuide/gitCommands.md)
 
 
 
@@ -25,6 +26,7 @@
 * [jsonToXml](java/jsonToXml.html)
 * [fileConvert](java/fileConvert.html)
 * [javaLearnNote](java/javaLearnNote.html)
+* [gitLearn](toolGuide/gitCommands.html)
 
 
 
