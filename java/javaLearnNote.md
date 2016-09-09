@@ -565,6 +565,114 @@ os.write();
 
 ```
 
+----------------
+
+## JAVA 反射
+
+### 基本概念
+
+### 反射实例
+
+#### 动态代理
+1. 动态代理主要用于面向切面编程
+1. 由于代理的原理实现是通过 类型的强制转换实现的，所以必须要有公共接口
+1. 代理对象为接口声明
+1. 做日志，验证，统计，权限
+
+代码实例
+
+```
+<!-- 代理类 -->
+public Class LoggingHandler implements InvocationHandler{
+    
+    private Object target;
+
+    public LoggingHandler (Object target){
+        this.target = target;
+    }
+
+    @Overright
+
+    public Object invoke(Object object,Method method,Object[] args){
+        <!-- 前面的处理逻辑 -->
+         Object result = method.invoke(target,args);
+         <!-- 后面的处理逻辑 -->
+
+    }
+
+    public Object createProxy(Object target){
+        return new Proxy.newProxyInstance(target.getClass().getClassLoader,target.getClass().getInterfaces(),new LoggingHandler(target));
+    }
+
+
+}
+
+<!-- 实体类 -->
+
+public interface Caculator{
+    
+    int add(int a);
+}
+
+public class CaculatorImp{
+    
+    public int add(int a){
+        <!-- 业务处理 -->
+        return a+100;
+    }
+}
+
+<!-- 使用动态代理实现面向切面编程 -->
+
+@Test
+public void demoTest(){
+    Caculator caculatorImp = new CaculatorImp();
+
+    <!-- 生成动态代理对象 -->
+
+    Caculator caculator = (Caculator)LoggingHandler.createProxy(caculatorImp);
+
+    caculator.add(10);
+
+}
+
+```
+
+```
+<!-- 不写对应的代理类，一句话搞定 -->
+public interface Caculator{
+    
+    double add(double a,double b);
+}
+
+public class CaculatorImp{
+    
+    public double div(double a,double b){
+        <!-- 业务处理 -->
+        return a+100;
+    }
+}
+
+@Test
+public void demo2(){
+
+    <!-- 注意 加上 final 关键字 -->
+    final Caculator caculator = new CaculatorImp();
+
+    Caculator caculator1 = (Caculator) Proxy.newProxyInstance(caculator.getClass().getClassLoader(), caculator.getClass().getInterfaces(), new InvocationHandler() {
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            System.out.println("begin");
+            Object result = method.invoke(caculator,args);
+            System.out.println("after");
+            return result;
+        }
+    });
+    caculator1.div(1,2);
+}
+```
+
+
 
 
 
