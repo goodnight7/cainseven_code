@@ -36,6 +36,8 @@
 
 # JAVA 学习笔记 
 
+
+
 ## JAVA 多线程
 
 ### 基本概念
@@ -329,14 +331,240 @@ public class Demo4co implements Runnable {
         * 节点流 : 文件与流的连接部分
         * 处理流 : 处理流,给流以各种扩展功能
     1. 源/目的 文件类型 : file Object 数组 管道 推回 特殊 打印 String 过滤
+
 ### 流的设计
-    1. 
+
+1. 主要是用装饰者模式设计流 主类是四个类，两种数据类型的 in out.
+
+1. 如果有字符转字节的过程，就要考虑编码的问题。否则不需要考虑编码问题
+
+1. 理解 IO 的流程与常用的方法，IO 其实很简单
 
 
     
 ### 怎么用
+
+```
+File file  = new File("");
+
+InputStream is = new FileInputStream(file);
+
+int n ;
+
+StringBuffer sb = new StringBuffer();
+
+while((n = is.read()) != -1 ){
+    sb.append((char)n);
+}
+
+is.close();
+
+OutputStream os = new FileOutputStream(file);
+
+String str = "king of world";
+
+os.write(str.getBytes());
+
+os.flush();
+
+os.write();
+
+```
+
 #### 构造与方法
+
+
 #### 实例
+
+* 实例如下 注解说明
+
+```
+    <!-- 将字符串写入一个文件，默认编码为 UTF-8 -->
+    @Test
+    public void demo1() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile");
+            FileOutputStream fo = new FileOutputStream(file);
+            String str = "hello world";
+            fo.write(str.getBytes());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    <!-- 同上 -->
+    @Test
+    public void demo2() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile");
+            FileOutputStream fo = new FileOutputStream(file);
+            String str = "走进新世界 刘纯彰";
+            //fo.write(str.getBytes("utf8"));
+            fo.write(str.getBytes());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    <!-- 读取文件内容 由于默认编码是 UTF-8 不存在乱码的问题 -->
+    @Test
+    public void demo3() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile");
+            FileInputStream fi = new FileInputStream(file);
+            int n = fi.read();
+            do {
+                char cr = (char) n;
+                n = fi.read();
+                System.out.print(cr);
+            } while (n != -1);
+
+            fi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    <!-- 写入文件，不过有一个字符集的问题，通过 Writer 类来写入文本 -->
+    @Test
+    public void demo4() {
+
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile1");
+            FileOutputStream fo = new FileOutputStream(file);
+            //OutputStreamWriter osw = new OutputStreamWriter(fo, "utf8");
+            OutputStreamWriter osw = new OutputStreamWriter(fo, "gbk");
+            String str = "走进新世界 我是世界之王";
+            osw.write(str);
+            osw.flush();
+            osw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    <!-- 通过 Reader 来读取文件内容 -->
+    @Test
+    public void demo5() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile1");
+            FileInputStream fi = new FileInputStream(file);
+            //InputStreamReader isr = new InputStreamReader(fi,"utf8");
+            InputStreamReader isr = new InputStreamReader(fi, "gbk");
+            StringBuffer sb = new StringBuffer();
+            while (isr.ready()) {
+                sb.append((char) isr.read());
+            }
+
+            System.out.println(sb.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    <!-- 直接进行文本操作 -->
+    @Test
+    public void demo6() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile2");
+            FileWriter fw = new FileWriter(file, true);
+            String str = "this is the line ";
+            for (int i = 0; i < 100; i++) {
+                fw.write(str + i + "\n");
+            }
+            fw.flush();
+            fw.close();
+            FileReader fr = new FileReader(file);
+            StringBuffer sb = new StringBuffer();
+            while (fr.ready()) {
+                sb.append((char) fr.read());
+            }
+            System.out.println(sb.toString());
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    <!-- 自带 buffer 提高性能 -->
+    @Test
+    public void demo7() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/newfile3");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+            String str = "这是第";
+            for (int i = 0; i < 100; i++) {
+                bw.write(str + i + "行 ! \n");
+            }
+            bw.flush();
+            bw.close();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while (br.ready()) {
+                System.out.println(br.readLine());
+            }
+
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    <!-- 将一个文件的内容复制到另一个文件 -->
+    @Test
+    public void demo8() {
+        try {
+            File file = new File("/Users/liuchunzhang/Desktop/filefrom");
+            FileWriter fw = new FileWriter(file, true);
+            String str = "this is the content of the file  ";
+            for (int i = 0; i < 10; i++) {
+                fw.write(str + i + "\n");
+            }
+            fw.close();
+            FileInputStream fi = new FileInputStream(file);
+            byte bts[] = new byte[1024];
+            File file1 = new File("/Users/liuchunzhang/Desktop/fileto");
+            FileOutputStream fo = new FileOutputStream(file1);
+            int len;
+            while ((len = fi.read(bts)) > 0) {
+                fo.write(bts, 0, len);
+            }
+            fo.flush();
+            fo.close();
+            fi.close();
+            FileReader fr = new FileReader(file1);
+            while (fr.ready()) {
+                System.out.print((char) fr.read());
+            }
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+```
+
 
 
 
