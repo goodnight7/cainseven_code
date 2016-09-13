@@ -14,22 +14,32 @@
 * `git status`
 
 * `git diff <file>`
+> 查看文件是否有修改 （修改没有提交到版本库中）
+
     * `git diff HEAD -- <file>`
     > 比较工作区与版本库的区别
 
 * `git log`
+> 查看提交历史
+
     * `git log--pretty=oneline`
     * `git log --graph --pretty=oneline --abbrev-commit`
 
 * `git reset --hard HEAD^`
+> HEAD 表示当前版本 上一个就是 HEAD^ 上上一个版本 HEAD^^ 前100个版本就是 HEAD~100
+
     * `git reset --hard <commitID>`
+    > 与上面的命令完全一样 只不过根据 commit id 来实现版本的切换
+
     * `git reset HEAD <file>`
     > 把暂存区的修改退回工作区 也就是撤销 `git add ` 操作
 
 * `git reflog`
+> 记录每一次命令 log
 
 * `git checkout -- <filename>`
-> 丢掉工作区的修改
+> 丢掉工作区的修改： 回到最近一次 git commit 或 git add 时的状态 
+> 如果暂存区是干净的，就回到版本库的最新版本；如果暂存区有内容，就回到暂存区的内容
 
 * `git rm <file>`
     * `git commit -m <des>`
