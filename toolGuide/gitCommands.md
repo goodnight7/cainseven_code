@@ -17,6 +17,7 @@
 > 查看文件是否有修改 （修改没有提交到版本库中）
 
     * `git diff HEAD -- <file>`
+
     > 比较工作区与版本库的区别
 
 * `git log`
@@ -93,9 +94,13 @@
 > 合并分支到当前分支
     
     * `git merge --no-ff`
+
     > 禁用 fastforward 模式 如下: *好处是删除分支后 可以保存分支的信息 在 log 中可以看到*
+
     ![禁用 fastforward](http://www.liaoxuefeng.com/files/attachments/001384909222841acf964ec9e6a4629a35a7a30588281bb000/0)
-    fastforward 模式如下 *不好的地方是删除分支后 无法保存分支的信息*:
+
+    >fastforward 模式如下 *不好的地方是删除分支后 无法保存分支的信息*:
+    
     ![fastforward](http://www.liaoxuefeng.com/files/attachments/00138490883510324231a837e5d4aee844d3e4692ba50f5000/0)
 
 
@@ -126,12 +131,14 @@
 > 默认是把标签直接打在最新提交的一次 commit 上
 
     * `git tag`
+
     > 查看所有的标签
 
     * `git tag <tagname> <commitid>`
     > 给对应的 commit 打上标签
 
         * `git tag -a <tagname> -m <"desc"> <commitid>`
+
         > 创建带有说明的标签 
 
     * `git show <tagname>`
